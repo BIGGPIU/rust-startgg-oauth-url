@@ -1,0 +1,11 @@
+[package]
+name = "startgg_oauth"
+description = "A simple crate for generating Start.gg Oauth Urls"
+keywords = ["start", "oauth"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+pkce = "0.2.0"
+url-builder = "0.1.1"
+urlencoding = "2.1.3"

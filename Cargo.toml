@@ -1,7 +1,10 @@
 [package]
 name = "startgg_oauth"
 description = "A simple crate for generating Start.gg Oauth Urls"
+authors = ["BIGGPIU"]
+license = "MIT OR Apache-2.0"
 keywords = ["start", "oauth"]
+repository = "https://github.com/BIGGPIU/rust-startgg-oauth-url/tree/main"
 version = "0.1.0"
 edition = "2024"
 
@@ -9,3 +12,6 @@ edition = "2024"
 pkce = "0.2.0"
 url-builder = "0.1.1"
 urlencoding = "2.1.3"
+
+[dev-dependencies]
+url = "2.5.7"

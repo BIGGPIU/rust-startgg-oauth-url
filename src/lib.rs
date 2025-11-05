@@ -24,7 +24,7 @@
 //! ```
 //! ### Generating a Start.gg Oauth Url with extra scopes
 //! ```rust
-//!use startgg_oauth::{AuthUrl,ScopeBuilder}
+//!use startgg_oauth::{AuthUrl,ScopeBuilder};
 //!let mut auth_url_builder = AuthUrl::new(64);
 //!let mut scope_builder = ScopeBuilder::new();
 //!
@@ -67,3 +67,56 @@ mod scope_builder;
 
 pub use pkce_implementation::AuthUrl;
 pub use scope_builder::ScopeBuilder;
+
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    use url::{Url};
+    // use urlencoding::encode;
+
+
+    #[test] 
+    fn pkce_generates_right_length() {
+        let len = 48;
+        let mut x = pkce_implementation::AuthUrl::new(len);
+        let y = x.generate_code_verifier_and_challenge();
+
+        assert_eq!(y.get_code_verifier().len(),len);
+    }
+
+    #[test]
+    fn cannot_exceed_pkce_length() {
+        let len = 999;
+        let mut x = pkce_implementation::AuthUrl::new(len);
+
+        let y = x.generate_code_verifier_and_challenge();
+
+        assert_ne!(y.get_code_verifier().len(),len);
+    }
+
+    #[test]
+    fn link_has_all_parts() {
+        let mut auth_url = AuthUrl::new(48);
+        let redirect_uri = "https://biggpiu.github.io".to_string();
+        // let encoded_redirect_uri = encode(&redirect_uri).into_owned();
+
+        let auth = auth_url
+            .encode_redirect_uri_and_set(redirect_uri)
+            .set_client_id("fake".to_string())
+            .generate_code_verifier_and_challenge()
+            .build_url(&ScopeBuilder::default());
+
+
+        let raw_url = Url::parse(&auth);
+
+        if let Ok(deconstructed_url) = raw_url {
+            assert_eq!(deconstructed_url.host_str(),Some("start.gg"));
+            assert_eq!(deconstructed_url.path(),"/oauth/authorize");
+            assert_eq!(deconstructed_url.query_pairs().count(), 6);
+
+        }
+        
+    }
+}

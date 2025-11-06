@@ -1,5 +1,5 @@
 [package]
-name = "startgg-oauth"
+name = "startgg_oauth"
 description = "A simple crate for generating Start.gg Oauth Urls"
 authors = ["BIGGPIU"]
 license = "MIT OR Apache-2.0"
